@@ -14,6 +14,10 @@ setInterval(() => {
 
 const client = new Client({
   authStrategy: new LocalAuth(),
+  puppeteer: {
+args: ['--no-sandbox', '--disable-setuid-sandbox']
+}
+
 });
 
 client.on("qr", (qr) => {
