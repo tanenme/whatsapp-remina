@@ -7,7 +7,7 @@ const clients = require("../client")
 const { MessageMedia } = require("whatsapp-web.js");
 
 // console.log(clients);
-const credentials = require("./src/chatbot.json");
+const credentials = require("../src/chatbot.json");
 
 const doc = new GoogleSpreadsheet(
   "121RwpPqaiVdllSbw7mdV_j29u_nSiPpnePFeNvUabx4"
@@ -87,8 +87,8 @@ async function accessSpreedsheet() {
 
       const sendData = async () => {
         result = await MessageMedia.fromFilePath(`./src/${nip}.xlsx`)
-        await clients.sendMessage('6285155194942@c.us', "Ada yang ngajuin SPPD baru nichhh!!! 😗")
-        await clients.sendMessage('6285155194942@c.us', result)
+        await clients.sendMessage('6281233541429@c.us', "Ada yang ngajuin SPPD baru nichhh!!! 😗")
+        await clients.sendMessage('6281233541429@c.us', result)
         console.log("pesan berhasil dikirim")
         removeHandler()
     }

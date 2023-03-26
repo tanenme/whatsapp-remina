@@ -12,9 +12,9 @@ class Sppd {
       "*Pengajuan SPPD*\n\n" +
       "Untuk Mengajukan SPPD, terdapat beberapa persyaratan yang harus dipenuhi oleh karyawan atau pegawai yang akan melakukan perjalanan dinas. Beberapa persyaratan umum yang mungkin dibutuhkan antara lain :\n\n" +
       "1. Melengkapi Formulir yang disediakan.\n" +
-      "2. Melampirkan Surat Perintah.\n" +
+      "2. Melampirkan Surat Undangan.\n" +
       // "3. Menyertakan bukti reservasi transportasi dan penginapan.\n",
-      "3. Jika melakukan Reservasi Transportasi atau Penginapan harus menyertekan buktinya.\n" +
+      "3. Jika melakukan Reservasi Transportasi atau Penginapan harus menyertakan buktinya.\n" +
       "\nSilahkan akses link berikut untuk mulai mengisi Formulir pengajuan SPPD https://forms.gle/spYs2YZiQ4eexetM9 " +
       "atau Ketik */Menu* untuk kembali ke Menu Utama"
     );

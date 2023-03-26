@@ -14,9 +14,6 @@ setInterval(() => {
 
 const client = new Client({
   authStrategy: new LocalAuth(),
-  puppeteer: {
-    args: ['--no-sandbox'],
-}
 });
 
 client.on("qr", (qr) => {
@@ -44,39 +41,36 @@ client.on("message", async (msg) => {
     isSent = false;
   }
 
-    if (!isSent) {
+    if (!isSent || msg.body.toLocaleLowerCase() == "/menu") {
       await chat.sendMessage(menuAwal());
       isSent = true;
-    }
+    } 
     
     switch (msg.body.toLowerCase()) {
-      case "/menu":
-        await chat.sendMessage(menuAwal());
-        break;
-      case "/gigi":
+      case "1":
         await chat.sendMessage(Restitusi.menuGigi());
         break;
-      case "/rawatjalan":
+      case "2":
         await chat.sendMessage(Restitusi.menuRawatJalan());
         break;
-      case "/rawatinap":
+      case "3":
         await chat.sendMessage(Restitusi.menuRawatInap());
         break;
-      case "/kacamata":
+      case "4":
         await chat.sendMessage(Restitusi.menuKacamata());
         break;
-      case "/unduhdaftarfaskes":
+      case "5":
         await chat.sendMessage(Restitusi.faskesPDF());
-        isSent = false;
+        // isSent = false;
         break;
 
       // SPPD Menu
-      case "/informasisppd":
+      case "6":
         await chat.sendMessage(Sppd.menuUtama());
         break;
-      case "/pengajuansppd":
+      case "7":
         await chat.sendMessage(Sppd.pengajuanSppd());
-        isSent = false;
+        // isSent = false;
         break;
       default:
         break;
