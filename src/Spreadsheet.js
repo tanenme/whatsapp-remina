@@ -1,0 +1,117 @@
+const { GoogleSpreadsheet } = require("google-spreadsheet");
+const { promisify } = require("util");
+const fs = require('fs');
+const ExcelJS = require('exceljs');
+const delay = require('delay');
+const clients = require("../client")
+const { MessageMedia } = require("whatsapp-web.js");
+
+// console.log(clients);
+const credentials = require("./src/chatbot.json");
+
+const doc = new GoogleSpreadsheet(
+  "121RwpPqaiVdllSbw7mdV_j29u_nSiPpnePFeNvUabx4"
+);
+
+const sheetNumber = 0;
+
+let i = 1
+async function accessSpreedsheet() {
+
+  await doc.useServiceAccountAuth(credentials);
+  await doc.loadInfo();
+  const sheet = doc.sheetsByIndex[sheetNumber];
+  let currentRowCount = sheet.rowCount;
+
+  do{
+    await sheet.loadCells();
+    const newRowCount = sheet.rowCount;
+
+    if (newRowCount > currentRowCount) {
+      await sheet.loadHeaderRow();
+      console.log(`New row added at index ${newRowCount - 1}`);
+      // console.log(clients);
+
+      let indexNewRow = parseInt(newRowCount.toString().substring(1)-2)
+      const newRow = await sheet.getRows();
+
+      
+      let timeStamp = newRow[indexNewRow]._rawData[0]
+      let nip = newRow[indexNewRow]._rawData[1]
+      let nama = newRow[indexNewRow]._rawData[2]
+      let unit = newRow[indexNewRow]._rawData[3]
+      let startDate = newRow[indexNewRow]._rawData[4]
+      let endDate = newRow[indexNewRow]._rawData[5]
+      let tujuan = newRow[indexNewRow]._rawData[6]
+      let alasan = newRow[indexNewRow]._rawData[7]
+      let jenisSppd = newRow[indexNewRow]._rawData[8]
+      let kendaraan = newRow[indexNewRow]._rawData[9]
+      let klaimHotel = newRow[indexNewRow]._rawData[10]
+      let uploadSurat = newRow[indexNewRow]._rawData[11]
+      let uploadFormSppd = newRow[indexNewRow]._rawData[12]
+
+      // Buat file Excel baru dan tambahkan data pada row ke sheet Excel
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet('Sheet1');
+
+      worksheet.getCell('A1').value = 'Timestamp :';
+      worksheet.getCell('A2').value = timeStamp;
+      worksheet.getCell('B1').value = 'NIP :';
+      worksheet.getCell('B2').value = nip;
+      worksheet.getCell('C1').value = 'Nama :';
+      worksheet.getCell('C2').value = nama;
+      worksheet.getCell('D1').value = 'Unit :';
+      worksheet.getCell('D2').value = unit;
+      worksheet.getCell('E1').value = 'Tanggal Start :';
+      worksheet.getCell('E2').value = startDate;
+      worksheet.getCell('F1').value = 'Tanggal End :';
+      worksheet.getCell('F2').value = endDate;
+      worksheet.getCell('G1').value = 'Tujuan :';
+      worksheet.getCell('G2').value = tujuan;
+      worksheet.getCell('H1').value = 'Alasan :';
+      worksheet.getCell('H2').value = alasan;
+      worksheet.getCell('I1').value = 'Jenis SPPD :';
+      worksheet.getCell('I2').value = jenisSppd;
+      worksheet.getCell('J1').value = 'Kendaraan :';
+      worksheet.getCell('J2').value = kendaraan;
+      worksheet.getCell('K1').value = 'Klaim Hotel :';
+      worksheet.getCell('K2').value = klaimHotel;
+      worksheet.getCell('L1').value = 'Surat :';
+      worksheet.getCell('L2').value = uploadSurat;
+      worksheet.getCell('M1').value = 'Form SPPD :';
+      worksheet.getCell('M2').value = uploadFormSppd;
+
+
+      // Simpan file Excel di dalam direktori lokal
+      await workbook.xlsx.writeFile(`./src/${nip}.xlsx`);
+
+      const sendData = async () => {
+        result = await MessageMedia.fromFilePath(`./src/${nip}.xlsx`)
+        await clients.sendMessage('6285155194942@c.us', "Ada yang ngajuin SPPD baru nichhh!!! 😗")
+        await clients.sendMessage('6285155194942@c.us', result)
+        console.log("pesan berhasil dikirim")
+        removeHandler()
+    }
+
+    const removeHandler = async () => {
+      await fs.unlink(`./src/${nip}.xlsx`, (err) => {
+          if (err) throw err;
+          console.log('File deleted');
+        });
+
+    return result;
+  }
+
+    sendData()
+
+      currentRowCount++
+    }
+    else{
+      console.log("belum ada data baru")
+    }
+  }while(i=1)
+}
+
+// accessSpreedsheet();
+
+module.exports = {accessSpreedsheet}
