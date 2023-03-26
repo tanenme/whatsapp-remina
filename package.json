@@ -17,6 +17,6 @@
     "google-spreadsheet": "^3.3.0",
     "nodemon": "^2.0.21",
     "qrcode-terminal": "^0.12.0",
-    "whatsapp-web.js": "github:pedroslopez/whatsapp-web.js#fix-buttons-list"
+    "whatsapp-web.js": "^1.19.5"
   }
 }
