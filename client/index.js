@@ -33,6 +33,7 @@ client.on("ready", () => {
 });
 
 isSent = false;
+validation = false;
 
 client.on("message", async (msg) => {
   console.log(`Message from ${msg.from}: ${msg.body}`);
@@ -45,11 +46,19 @@ client.on("message", async (msg) => {
     isSent = false;
   }
 
-    if (!isSent || msg.body.toLocaleLowerCase() == "/menu") {
+    if (!isSent || msg.body.toLowerCase() == "/menu") {
       await chat.sendMessage(menuAwal());
+      await chat.mute()
       isSent = true;
+      validation = false;
     } 
     
+
+    if (chat.isMuted) {
+      if (msg.body == "8") {
+	await chat.unmute();
+	await chat.sendMessage( "Apakah anda ingin terhubung ke Admin (Ya / Tidak)");
+    } else {
     switch (msg.body.toLowerCase()) {
       case "1":
         await chat.sendMessage(Restitusi.menuGigi());
@@ -79,9 +88,31 @@ client.on("message", async (msg) => {
       default:
         break;
     }
-
-
-  console.log(`isSent: ${isSent}`);
+   }
+  } else if (!chat.isMuted && msg.body.toLowerCase() == "ya" && !validation) {
+    validation = true;
+    //console.log("UNMUTED");
+    await chat.sendMessage(
+      "Mohon tunggu sebentar, kami akan sambungkan ke Admin yang bersangkutan."
+    );
+    await client.sendMessage(
+      "6281233541429@c.us",
+      `${msg.from} Ingin terhubung dengan Admin`
+    );
+    await chat.sendMessage("Admin telah terhubung");
+  } else if (
+    !chat.isMuted &&
+    msg.body.toLowerCase() &&
+    !validation &&
+    msg.body.toLowerCase() != "/menu"
+  ) {
+    await chat.mute();
+    await chat.sendMessage(menuAwal());
+  }
+  //console.log(`isSent: ${isSent}`);
+  //console.log(`chat status: ${chat.isMuted}`);
+  //console.log(`validation status : ${validation}`);
 });
+
 
 module.exports = client
