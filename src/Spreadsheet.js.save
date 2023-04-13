@@ -48,10 +48,10 @@ try{
       let alasan = newRow[indexNewRow]._rawData[7]
       let jenisSppd = newRow[indexNewRow]._rawData[8]
       let kendaraan = newRow[indexNewRow]._rawData[9]
-      let uploadSurat = newRow[indexNewRow]._rawData[10]
-      let uploadTransportasi = newRow[indexNewRow]._rawData[11]
-      let klaimHotel = newRow[indexNewRow]._rawData[12]
+      let klaimHotel = newRow[indexNewRow]._rawData[10]
+      let uploadSurat = newRow[indexNewRow]._rawData[12]
       let uploadFormSppd = newRow[indexNewRow]._rawData[13]
+      let uploadKwitansiTranspotasi = newRow[indexNewRow]._rawData[11]
 
       // Buat file Excel baru dan tambahkan data pada row ke sheet Excel
       const workbook = new ExcelJS.Workbook();
@@ -77,15 +77,12 @@ try{
       worksheet.getCell('I2').value = jenisSppd;
       worksheet.getCell('J1').value = 'Kendaraan :';
       worksheet.getCell('J2').value = kendaraan;
-      worksheet.getCell('K1').value = 'Surat Undangan :';
-      worksheet.getCell('K2').value = uploadSurat;
-      worksheet.getCell('L1').value = 'Kwitansi Transportasi :';
-      worksheet.getCell('L2').value = uploadTransportasi;
-      worksheet.getCell('M1').value = 'Kwitansi Hotel :';
-      worksheet.getCell('M2').value = klaimHotel;
-      worksheet.getCell('N1').value = 'Form SPPD :';
-      worksheet.getCell('N2').value = uploadFormSppd;
-
+      worksheet.getCell('K1').value = 'Klaim Hotel :';
+      worksheet.getCell('K2').value = klaimHotel;
+      worksheet.getCell('L1').value = 'Surat :';
+      worksheet.getCell('L2').value = uploadSurat;
+      worksheet.getCell('M1').value = 'Form SPPD :';
+      worksheet.getCell('M2').value = uploadFormSppd;
 
       // Simpan file Excel di dalam direktori lokal
       await workbook.xlsx.writeFile(`./src/${nip}.xlsx`);

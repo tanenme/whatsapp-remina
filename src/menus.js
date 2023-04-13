@@ -22,6 +22,11 @@ function menuAwal() {
     body: "7. Pengajuan SPPD\n\n",
   };
 
+  let admin = {
+	header: "*Layanan Admin*\n",
+	body: "8. Menghubungkan ke Admin\n\n",
+	};
+
   let footer =
     "Cara pilih Fitur atau Jenis Layanan dengan cara, Ketik nomor yang tertera pada Jenis Layanan yang dipilih.\n" +
     "Contoh: Ketik *1* untuk memilih menu Pemeriksaan Gigi.";
@@ -40,6 +45,8 @@ function menuAwal() {
     sppd.header +
     sppd.information +
     sppd.body +
+    admin.header +
+    admin.body +
     footer
   );
 }
