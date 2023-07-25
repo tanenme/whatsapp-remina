@@ -25,22 +25,24 @@ const sheetNumber = 0;
 let i = 1
 async function accessSpreedsheet() {
 
-try{
-  // !! Excel from Pengajuan SPPD = #1
-  await doc.useServiceAccountAuth(credentials);
-  await doc.loadInfo();
-  const sheet = doc.sheetsByIndex[sheetNumber];
-  let currentRowCount = sheet.rowCount;
-
-  // !! Excel from Updated Pendidikan Terakhir = #2
-  await docProfilePegawai.useServiceAccountAuth(credentials);
-  await docProfilePegawai.loadInfo();
-  const sheetProfilePegawai = docProfilePegawai.sheetsByIndex[sheetNumber];
-  let currentRowCountPP = sheetProfilePegawai.rowCount;
+    // !! Excel from Pengajuan SPPD = #1
+    await doc.useServiceAccountAuth(credentials);
+    await doc.loadInfo();
+    const sheet = doc.sheetsByIndex[sheetNumber];
+    let currentRowCount = sheet.rowCount;
+  
+    // !! Excel from Updated Pendidikan Terakhir = #2
+    await docProfilePegawai.useServiceAccountAuth(credentials);
+    await docProfilePegawai.loadInfo();
+    const sheetProfilePegawai = docProfilePegawai.sheetsByIndex[sheetNumber];
+    let currentRowCountPP = sheetProfilePegawai.rowCount;
 
   do{
     await delay(2000)
-	await sheet.loadCells();
+
+    try{
+
+	  await sheet.loadCells();
     const newRowCount = sheet.rowCount;
 
     if (newRowCount > currentRowCount) {
@@ -48,7 +50,7 @@ try{
       console.log(`New row added at index ${newRowCount - 1}`);
       // console.log(clients);
 
-      let indexNewRow = parseInt(newRowCount.toString().substring(1)-2)
+      let indexNewRow = parseInt(newRowCount.toString()-2 - 100)
       const newRow = await sheet.getRows();
 
       
@@ -62,10 +64,11 @@ try{
       let alasan = newRow[indexNewRow]._rawData[7]
       let jenisSppd = newRow[indexNewRow]._rawData[8]
       let kendaraan = newRow[indexNewRow]._rawData[9]
-      let uploadSurat = newRow[indexNewRow]._rawData[10]
-      let uploadTransportasi = newRow[indexNewRow]._rawData[11]
-      let klaimHotel = newRow[indexNewRow]._rawData[12]
-      let uploadFormSppd = newRow[indexNewRow]._rawData[13]
+      let uploadSurat = newRow[indexNewRow]._rawData[11]
+      let uploadFormSppdPegawai = newRow[indexNewRow]._rawData[14]
+      let uploadTransportasi = newRow[indexNewRow]._rawData[13]
+      let klaimHotel = newRow[indexNewRow]._rawData[10]
+      let uploadFormSppd = newRow[indexNewRow]._rawData[12]
 
       // Buat file Excel baru dan tambahkan data pada row ke sheet Excel
       const workbook = new ExcelJS.Workbook();
@@ -93,12 +96,14 @@ try{
       worksheet.getCell('J2').value = kendaraan;
       worksheet.getCell('K1').value = 'Surat Undangan :';
       worksheet.getCell('K2').value = uploadSurat;
-      worksheet.getCell('L1').value = 'Kwitansi Transportasi :';
-      worksheet.getCell('L2').value = uploadTransportasi;
-      worksheet.getCell('M1').value = 'Kwitansi Hotel :';
-      worksheet.getCell('M2').value = klaimHotel;
-      worksheet.getCell('N1').value = 'Form SPPD :';
-      worksheet.getCell('N2').value = uploadFormSppd;
+      worksheet.getCell('L1').value = 'Form SPPD Pegawai :';
+      worksheet.getCell('L2').value = uploadFormSppdPegawai;
+      worksheet.getCell('M1').value = 'Kwitansi Transportasi :';
+      worksheet.getCell('M2').value = uploadTransportasi;
+      worksheet.getCell('N1').value = 'Kwitansi Hotel :';
+      worksheet.getCell('N2').value = klaimHotel;
+      worksheet.getCell('O1').value = 'Form SPPD :';
+      worksheet.getCell('O2').value = uploadFormSppd;
 
 
       // Simpan file Excel di dalam direktori lokal
@@ -106,8 +111,8 @@ try{
 
       const sendData = async () => {
         result = await MessageMedia.fromFilePath(`./src/${nip}.xlsx`)
-        await clients.sendMessage(`${nomerWaBuYaniar}@c.us`, `Halooo minn, ada yang ngajuin SPPD baru!!!`)
-        await clients.sendMessage(`${nomerWaBuYaniar}@c.us`, result)
+        await clients.sendMessage(`${nomerTesting}@c.us`, `Halooo minn, ada yang ngajuin SPPD baru!!!`)
+        await clients.sendMessage(`${nomerTesting}@c.us`, result)
         console.log("pesan berhasil dikirim")
         removeHandler()
     }
@@ -118,7 +123,7 @@ try{
           console.log('File deleted');
         });
 
-  }
+    }
 
     sendData()
 
@@ -127,7 +132,6 @@ try{
     else{
       console.log("belum ada data SPPD baru")
     }
-    
        // #Update data pendidikan
        await sheetProfilePegawai.loadCells();
        const newRowCountPP = sheetProfilePegawai.rowCount;
@@ -137,7 +141,7 @@ try{
          console.log(`New row added at index ${newRowCountPP - 1}`);
          // console.log(clients);
    
-         let indexNewRow = parseInt(newRowCountPP.toString().substring(1) - 2);
+         let indexNewRow = parseInt(newRowCountPP.toString() - 2 - 100);
          const newRow = await sheetProfilePegawai.getRows();
    
          let timeStamp = newRow[indexNewRow]._rawData[0];
@@ -172,10 +176,10 @@ try{
              `./src/UpdatePendidikan_${nip}.xlsx`
            );
            await clients.sendMessage(
-             `${nomerWaBuYaniar}@c.us`,
+             `${nomerTesting}@c.us`,
              "Haloo minn, Ada yang Update Pendidikan nihhh!!!"
            );
-           await clients.sendMessage(`${nomerWaBuYaniar}@c.us`, result);
+           await clients.sendMessage(`${nomerTesting}@c.us`, result);
            console.log("pesan berhasil dikirim");
            removeHandler();
          };
@@ -193,9 +197,9 @@ try{
        } else {
           console.log("belum ada data pendidikan baru");
        }
-     } while ((i = 1));
    }catch(error){console.log(error)}
-  }
+  } while ((i = 1));
+}
 
 //accessSpreedsheet();
 

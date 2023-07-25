@@ -1,9 +1,12 @@
+let { cekPengajuan } = require("../src/cek")
+const fs = require('fs');
+
+
 const qrcode = require("qrcode-terminal");
 const {
   Client,
   LocalAuth,
   MessageMedia,
-  ChatTypes,
 } = require("whatsapp-web.js");
 
 const { menuAwal } = require("../src/menus");
@@ -16,7 +19,7 @@ let sessions = {};
 setInterval(() => {
   sessions = {};
   console.log(sessions);
-}, 60000 * 12);
+}, 120000 * 12);
 
 const client = new Client({
   authStrategy: new LocalAuth(),
@@ -41,6 +44,9 @@ isSent = false;
 validation = false;
 
 client.on("message", async (msg) => {
+
+  if (msg.from !== "status@broadcast"){
+
   console.log(`Message from ${msg.from}: ${msg.body}`);
   chat = await msg.getChat();
 
@@ -56,6 +62,26 @@ client.on("message", async (msg) => {
     await chat.mute();
     isSent = true;
     validation = false;
+  }
+
+  if (msg.body.toLowerCase().includes("!cek")){
+    let NIP = msg.body.toUpperCase().split("CEK")[1]
+    let from = msg.from
+    console.log(NIP)
+    console.log(from)
+    let cek = await cekPengajuan(NIP, from)
+
+    if(cek){
+      let result = await MessageMedia.fromFilePath(`./cek${NIP}.xlsx`);
+      await client.sendMessage(from, result,{caption: 'Lihat pengajuan anda pada excel diatas'})
+      await fs.unlink(`./cek${NIP}.xlsx`, (err) => {
+        if (err) throw err;
+        console.log('File deleted');
+      });
+    }else if(cek == false){
+      await client.sendMessage(from, `Maaf ${NIP} anda tidak ada dalam daftar pengajuan`)
+    }
+
   }
 
   if (chat.isMuted) {
@@ -79,32 +105,43 @@ client.on("message", async (msg) => {
           await chat.sendMessage(Restitusi.menuKacamata());
           break;
         case "5":
+          await chat.sendMessage(Restitusi.menuPlnSehat());
+          break;
+        case "6":
           await chat.sendMessage(Restitusi.faskesPDF());
           // isSent = false;
           break;
 
         // SPPD Menu
-        case "6":
+        case "7":
           await chat.sendMessage(Sppd.menuUtama());
           break;
-        case "6.1":
+        case "7.1":
           await chat.sendMessage(Sppd.aturanSPPD());
           break;
-        case "7":
+        case "8":
+          await chat.sendMessage(Sppd.cetakFormRestitusi());
+          // isSent = false;
+          break;
+        case "9":
           await chat.sendMessage(Sppd.pengajuanSppd());
           // isSent = false;
           break;
-        case "8":
-          await chat.sendMessage(profilePegawai.penambahanAnggotaKeluarga());
+        case "10":
+          await chat.sendMessage(Sppd.cek())
+          break
+        case "11":
+          await chat.sendMessage(profilePegawai.penambahanAnggotaKeluarga(),{caption: profilePegawai.penambahanAnggotaKeluargaCaption()});
           break;
-        case "9":
+        case "12":
           await chat.sendMessage(profilePegawai.updatePendidikanTerakhir());
           break;
         default:
           break;
       }
     }
-  } else if (!chat.isMuted && msg.body.toLowerCase() == "ya" && !validation) {
+  } 
+  else if (!chat.isMuted && msg.body.toLowerCase() == "ya" && !validation) {
     validation = true;
     console.log("UNMUTED");
     await chat.sendMessage(
@@ -127,6 +164,7 @@ client.on("message", async (msg) => {
   console.log(`isSent: ${isSent}`);
   console.log(`chat status: ${chat.isMuted}`);
   console.log(`validation status : ${validation}`);
+}
 });
 
 module.exports = client;

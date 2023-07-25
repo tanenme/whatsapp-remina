@@ -8,7 +8,7 @@ class Sppd {
       "1. PLN Sutojayan -> Kediri\n" +
       "2. PLN Wlingi -> Kediri\n" +
       "3. Perjalanan Dinas yang lebih dari 50km\n\n" +
-      "Adapun aturan dari SPPD, Silahkan Ketik *6.1* untuk mendapatkan File PDF tentang aturan SPPD.\n\n" +
+      "Adapun aturan dari SPPD, Silahkan Ketik *7.1* untuk mendapatkan File PDF tentang aturan SPPD.\n\n" +
       "Silahkan Ketik */Menu* untuk kembali ke Menu Utama"
     );
   }
@@ -30,6 +30,21 @@ class Sppd {
       "./doc/PERATURAN PERJALANAN DINAS.pdf"
     );
     return media;
+  }
+
+  static cetakFormRestitusi() {
+    const media = MessageMedia.fromFilePath(
+      "./doc/FORMULIR PERMOHONAN SPPD PEGAWAI.xlsx"
+    );
+    return media;
+  }
+
+  static cek(){
+    return (
+      "*Monitoring Proses pengajuan SPPD*\n" + 
+      "Anda dapat melakukan Monitoring Proses pengajuan SPPD yang telah anda ajukan dengan cara mengirim pesan *!cekNIP*\n"+
+      "contoh: *!cek1234567YZ*"
+    )
   }
 }
 

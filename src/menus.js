@@ -10,23 +10,26 @@ function menuAwal() {
     gigi: "1. Pemeriksaan Gigi\n",
     rawatJalan: "2. Rawat Jalan\n",
     rawatInap: "3. Rawat Inap\n",
-    kacamata: "4. Kacamata\n\n",
+    kacamata: "4. Kacamata\n",
+    plnSehat: "5. Informasi New PLN Sehat\n\n"
   };
   let faskes = {
     header: "Daftar Faskes Jawa Timur : \n",
-    body: "5. Unduh Daftar Faskes PDF\n\n",
+    body: "6. Unduh Daftar Faskes PDF\n\n",
   };
 
   let sppd = {
     header: "*Menu SPPD*\n",
-    information: "6. Informasi SPPD\n",
-    body: "7. Pengajuan SPPD\n\n",
+    information: "7. Informasi SPPD\n",
+    cetakForm: "8. Cetak Form Restitusi SPPD\n",
+    body: "9. Pengajuan SPPD\n",
+    cek: "10. Monitoring Proses SPPD\n\n"
   };
 
   let profilePegawai = {
     header: "*Menu Profil Pegawai*\n",
-    addKeluarga: "8. Unduh Penambahan Anggota Keluarga PDF (diisi)\n",
-    updatePendidikanPegawai: "9. Update Pendidikan terakhir Pegawai\n\n",
+    addKeluarga: "11. Penambahan Anggota Keluarga\n",
+    updatePendidikanPegawai: "12. Update Pendidikan terakir Pegawai\n\n",
   };
 
   let admin = "0. Menghubungkan ke Admin\n\n";
@@ -44,11 +47,14 @@ function menuAwal() {
     reimburse.rawatJalan +
     reimburse.rawatInap +
     reimburse.kacamata +
+    reimburse.plnSehat +
     faskes.header +
     faskes.body +
     sppd.header +
     sppd.information +
+    sppd.cetakForm +
     sppd.body +
+    sppd.cek +
     profilePegawai.header +
     profilePegawai.addKeluarga +
     profilePegawai.updatePendidikanPegawai +

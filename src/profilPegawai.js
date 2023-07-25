@@ -8,6 +8,18 @@ class profilePegawai {
     return media;
   }
 
+  static penambahanAnggotaKeluargaCaption() {
+    return (
+      "Untuk melakukan update Penambahan Anggota Keluarga, silahkan :\n\n" +
+      "1. Unduh formulir penambahan Anggota Keluarga diatas\n" +
+      "2. Mengisi Form Penambahan Anggota Keluarga\n" +
+      "3. Melengkapi persyaratan sesuai form\n"+
+      "4. Kirimkan Scan berkas tsb ke email yaniar@pln.co.id atau wahyu.susanto@pln.co.id\n\n"+
+      "Ketik /Menu untuk kembali ke Menu Utama"
+    )
+  }
+  
+
   static updatePendidikanTerakhir() {
     return (
       "*Update Pendidikan Terakhir*\n\n" +
